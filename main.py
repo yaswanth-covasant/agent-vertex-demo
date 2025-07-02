@@ -2,7 +2,6 @@ from google.adk.agents import Agent
 from vertexai.preview import reasoning_engines
 from typing import Dict, Any, List
 
-
 async def find_movie_showtimes(movie: str, location: str, date: str) -> dict:
     """Finds available showtimes for a given movie, location, and date."""
     print(f"[Tool Call] find_movie_showtimes(movie='{movie}', location='{location}', date='{date}')")
