@@ -13,7 +13,7 @@ steps:
       - 'push'
       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
 
-# Specify the image that was built
+
 images:
   - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
 
