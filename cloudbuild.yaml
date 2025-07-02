@@ -1,0 +1,22 @@
+steps:
+  # Step 1: Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+      - '.'
+
+  # Step 2: Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+
+# Specify the image that was built
+images:
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+
+# THIS LINE FIXES THE ERROR
+options:
+  logging: CLOUD_LOGGING_ONLY
