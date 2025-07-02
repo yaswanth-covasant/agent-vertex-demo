@@ -1,4 +1,3 @@
-
 from google.adk.agents import Agent
 from vertexai.preview import reasoning_engines
 from typing import Dict, Any, List
