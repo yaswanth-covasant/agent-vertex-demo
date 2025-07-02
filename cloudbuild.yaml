@@ -4,18 +4,18 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
       - '.'
 
   # Step 2: Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
 
 
 images:
-  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-engines/movie-booking-engine:$COMMIT_SHA'
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
 
 
 options:
