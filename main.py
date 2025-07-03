@@ -16,7 +16,8 @@ class MovieBookingAgent:
             "A friendly and efficient movie booking assistant that helps users find showtimes, "
             "select seats, and confirm bookings for movies in their preferred location."
         )
-        self.instructions = (
+        # RENAMED from self.instructions to self.system_instruction for clarity and consistency
+        self.system_instruction = (
             "You are a helpful and friendly assistant for booking movie tickets. "
             "Follow these guidelines:\n"
             "1. Always greet users warmly and ask for their movie preferences\n"
@@ -32,122 +33,43 @@ class MovieBookingAgent:
     async def find_movie_showtimes(self, movie: str, location: str, date: str) -> Dict[str, Any]:
         """Find movie showtimes for a given movie, location, and date."""
         print(f"[Tool Call] find_movie_showtimes(movie='{movie}', location='{location}', date='{date}')")
-        
-        # Demo data - replace with actual API calls to movie booking services
         if movie.lower() == "avengers: endgame" and location.lower() == "hyderabad" and date == "2025-05-15":
-            return {
-                "status": "success",
-                "showtimes": ["14:00", "17:30", "21:00"],
-                "theaters": ["PVR Forum Mall", "INOX GVK One", "AMB Cinemas"],
-                "prices": {"regular": 250, "premium": 350}
-            }
-        elif movie.lower() == "spider-man" and location.lower() == "hyderabad":
-            return {
-                "status": "success",
-                "showtimes": ["13:00", "16:30", "20:00"],
-                "theaters": ["Prasads IMAX", "PVR Punjagutta"],
-                "prices": {"regular": 200, "premium": 300}
-            }
+            return { "status": "success", "showtimes": ["14:00", "17:30", "21:00"], "theaters": ["PVR Forum Mall", "INOX GVK One", "AMB Cinemas"], "prices": {"regular": 250, "premium": 350} }
+        elif "spider-man" in movie.lower() and location.lower() == "hyderabad":
+            return { "status": "success", "showtimes": ["13:00", "16:30", "20:00"], "theaters": ["Prasads IMAX", "PVR Punjagutta"], "prices": {"regular": 200, "premium": 300} }
         else:
-            return {
-                "status": "error",
-                "error_message": f"No showtimes found for '{movie}' in '{location}' on '{date}'.",
-            }
+            return { "status": "error", "error_message": f"No showtimes found for '{movie}' in '{location}' on '{date}'." }
 
     async def select_seats(self, showtime: str, num_seats: int, preferences: str = "") -> Dict[str, Any]:
         """Select seats for a movie showtime."""
         print(f"[Tool Call] select_seats(showtime='{showtime}', num_seats={num_seats}, preferences='{preferences}')")
-        
         if num_seats <= 2:
-            # Demo seat selection logic
-            if preferences.lower() == "front":
-                selected_seats_list = ["C5", "C6"] if num_seats == 2 else ["C5"]
-            elif preferences.lower() == "back":
-                selected_seats_list = ["H5", "H6"] if num_seats == 2 else ["H5"]
-            else:
-                selected_seats_list = ["E5", "E6"] if num_seats == 2 else ["E5"]
-            
-            return {
-                "status": "success",
-                "seats": selected_seats_list,
-                "message": f"Selected {num_seats} seats ({', '.join(selected_seats_list)}) for {showtime} showtime.",
-                "preferences_applied": preferences if preferences else "middle section (default)",
-            }
+            if preferences.lower() == "front": selected_seats_list = ["C5", "C6"] if num_seats == 2 else ["C5"]
+            elif preferences.lower() == "back": selected_seats_list = ["H5", "H6"] if num_seats == 2 else ["H5"]
+            else: selected_seats_list = ["E5", "E6"] if num_seats == 2 else ["E5"]
+            return { "status": "success", "seats": selected_seats_list, "message": f"Selected {num_seats} seats ({', '.join(selected_seats_list)}) for {showtime} showtime.", "preferences_applied": preferences if preferences else "middle section (default)"}
         else:
-            return {
-                "status": "error",
-                "error_message": f"Could not select {num_seats} seats for {showtime}. Maximum 2 seats allowed in this demo.",
-            }
+            return { "status": "error", "error_message": f"Could not select {num_seats} seats for {showtime}. Maximum 2 seats allowed in this demo." }
 
     async def confirm_booking(self, movie: str, showtime: str, seats: List[str], contact_info: str = "") -> Dict[str, Any]:
         """Confirm the movie booking."""
         print(f"[Tool Call] confirm_booking(movie='{movie}', showtime='{showtime}', seats={seats}, contact='{contact_info}')")
-        
-        # Generate booking ID
         booking_id = f"BK{random.randint(100000, 999999)}"
-        
-        return {
-            "status": "success",
-            "booking_id": booking_id,
-            "confirmation_message": (
-                f"✅ Your booking for '{movie}' at {showtime} in seats {', '.join(seats)} is confirmed! "
-                f"Booking ID: {booking_id}. "
-                f"Please arrive 15 minutes before the show time."
-            ),
-            "booking_details": {
-                "movie": movie,
-                "showtime": showtime,
-                "seats": seats,
-                "booking_id": booking_id,
-                "contact": contact_info
-            }
-        }
+        return { "status": "success", "booking_id": booking_id, "confirmation_message": (f"✅ Your booking for '{movie}' at {showtime} in seats {', '.join(seats)} is confirmed! Booking ID: {booking_id}. Please arrive 15 minutes before the show time."), "booking_details": { "movie": movie, "showtime": showtime, "seats": seats, "booking_id": booking_id, "contact": contact_info } }
     
     def get_tools(self):
         """Return the list of tools/functions available to this agent."""
-        return [
-            self.find_movie_showtimes,
-            self.select_seats,
-            self.confirm_booking
-        ]
+        return [ self.find_movie_showtimes, self.select_seats, self.confirm_booking ]
     
     def get_config(self):
         """Return agent configuration."""
         return {
             "name": self.name,
             "description": self.description,
-            "instructions": self.instructions,
+            # THE FIX: Use the correct key 'system_instruction'
+            "system_instruction": self.system_instruction,
             "tools": self.get_tools()
         }
 
 # Create agent instance - this is what the deployment script looks for
 agent = MovieBookingAgent()
-
-# Also create these for alternative access patterns
-movie_booking_agent = agent  # Alternative name
-get_agent = lambda: agent    # Function to get agent
-
-# For testing purposes
-def test_agent():
-    """Test the agent functionality."""
-    print("Testing Movie Booking Agent...")
-    
-    import asyncio
-    
-    async def run_tests():
-        # Test showtimes
-        result1 = await agent.find_movie_showtimes("Avengers: Endgame", "Hyderabad", "2025-05-15")
-        print(f"Showtimes: {result1}")
-        
-        # Test seat selection
-        result2 = await agent.select_seats("17:30", 2, "back")
-        print(f"Seat selection: {result2}")
-        
-        # Test booking
-        result3 = await agent.confirm_booking("Avengers: Endgame", "17:30", ["H5", "H6"], "user@example.com")
-        print(f"Booking: {result3}")
-    
-    asyncio.run(run_tests())
-
-if __name__ == "__main__":
-    test_agent()
