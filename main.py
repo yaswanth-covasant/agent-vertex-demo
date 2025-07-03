@@ -17,7 +17,7 @@ class MovieBookingAgent:
             "select seats, and confirm bookings for movies in their preferred location."
         )
         # RENAMED from self.instructions to self.system_instruction for clarity and consistency
-        self.system_instruction = (
+        self.instruction = (
             "You are a helpful and friendly assistant for booking movie tickets. "
             "Follow these guidelines:\n"
             "1. Always greet users warmly and ask for their movie preferences\n"
@@ -67,7 +67,7 @@ class MovieBookingAgent:
             "name": self.name,
             "description": self.description,
             # THE FIX: Use the correct key 'system_instruction'
-            "system_instruction": self.system_instruction,
+            "instruction": self.instruction,
             "tools": self.get_tools()
         }
 
