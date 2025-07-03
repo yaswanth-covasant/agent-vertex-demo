@@ -30,7 +30,7 @@ class MovieBookingAgent:
             "8. Handle multiple movies or showtimes gracefully"
         )
     
-    async def find_movie_showtimes(self, movie: str, location: str, date: str) -> Dict[str, Any]:
+    def find_movie_showtimes(self, movie: str, location: str, date: str) -> Dict[str, Any]:
         """Find movie showtimes for a given movie, location, and date."""
         print(f"[Tool Call] find_movie_showtimes(movie='{movie}', location='{location}', date='{date}')")
         if movie.lower() == "avengers: endgame" and location.lower() == "hyderabad" and date == "2025-05-15":
@@ -40,7 +40,7 @@ class MovieBookingAgent:
         else:
             return { "status": "error", "error_message": f"No showtimes found for '{movie}' in '{location}' on '{date}'." }
 
-    async def select_seats(self, showtime: str, num_seats: int, preferences: str = "") -> Dict[str, Any]:
+    def select_seats(self, showtime: str, num_seats: int, preferences: str = "") -> Dict[str, Any]:
         """Select seats for a movie showtime."""
         print(f"[Tool Call] select_seats(showtime='{showtime}', num_seats={num_seats}, preferences='{preferences}')")
         if num_seats <= 2:
@@ -51,7 +51,7 @@ class MovieBookingAgent:
         else:
             return { "status": "error", "error_message": f"Could not select {num_seats} seats for {showtime}. Maximum 2 seats allowed in this demo." }
 
-    async def confirm_booking(self, movie: str, showtime: str, seats: List[str], contact_info: str = "") -> Dict[str, Any]:
+    def confirm_booking(self, movie: str, showtime: str, seats: List[str], contact_info: str = "") -> Dict[str, Any]:
         """Confirm the movie booking."""
         print(f"[Tool Call] confirm_booking(movie='{movie}', showtime='{showtime}', seats={seats}, contact='{contact_info}')")
         booking_id = f"BK{random.randint(100000, 999999)}"
