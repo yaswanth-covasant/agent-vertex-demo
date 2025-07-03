@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Build the container image
+ 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -7,7 +7,7 @@ steps:
       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
       - '.'
 
-  # Step 2: Push the container image to Artifact Registry
+ 
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'

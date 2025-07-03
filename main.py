@@ -37,5 +37,7 @@ root_agent = Agent(
 )
 
 
-
-app = reasoning_engines.make_app(root_agent)
+app = reasoning_engines.AdkApp(
+    agent=root_agent,
+    enable_tracing=True,
+)
