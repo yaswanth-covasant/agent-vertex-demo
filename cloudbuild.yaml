@@ -1,22 +1,50 @@
-steps:
+# steps:
  
+#   - name: 'gcr.io/cloud-builders/docker'
+#     args:
+#       - 'build'
+#       - '-t'
+#       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
+#       - '.'
+
+ 
+#   - name: 'gcr.io/cloud-builders/docker'
+#     args:
+#       - 'push'
+#       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
+
+
+# images:
+#   - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
+
+
+# options:
+#   logging: CLOUD_LOGGING_ONLY
+
+
+# cloudbuild.yaml
+
+steps:
+  # Step 1: Build the Docker image and apply two tags:
+  # 1. The unique commit SHA for precise version tracking.
+  # 2. The 'latest' tag for easy reference in deployment scripts.
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
+      # Tag with the specific commit SHA
       - '-t'
       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
+      # Also tag with 'latest'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:latest'
+      # Build context is the current directory
       - '.'
 
- 
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
-
-
+# The top-level 'images' key instructs Cloud Build to automatically push
+# any images built and tagged in the steps above. This removes the need for an explicit 'docker push' step.
 images:
   - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:$COMMIT_SHA'
-
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/agent-vertex-demo/movie-booking-engine:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY

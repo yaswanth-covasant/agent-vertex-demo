@@ -1,8 +1,5 @@
+# requirements.txt
 
-google-cloud-aiplatform[adk,agent_engines]
-
-
-gunicorn
-
-
+google-cloud-aiplatform[adk]
+fastapi
 uvicorn
