@@ -1,7 +1,7 @@
 # main.py
 
 from google.adk.agents import Agent
-from google.adk.cli.fast_api import get_fast_api_app
+# from google.adk.cli.fast_api import get_fast_api_app
 from typing import Dict, Any, List
 from fastapi import FastAPI,Response
 import uvicorn
@@ -91,8 +91,8 @@ async def get_agent_definition():
 
 # Use the ADK utility to automatically create the required
 # /health, /tools, and /execute_tool endpoints.
-get_fast_api_app(app, root_agent)
+
 
 # Optional: Add a main entrypoint for local testing
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(root_agent, host="0.0.0.0", port=8080)
