@@ -73,26 +73,3 @@ root_agent = Agent(
     tools=[find_movie_showtimes, select_seats, confirm_booking]
 )
 
-# Create a FastAPI app instance
-app = FastAPI()
-agent_definition_dict = {
-    "name": root_agent.name,
-    "model": root_agent.model,
-    "description": root_agent.description,
-    "instruction": root_agent.instruction,
-    "tools": [tool.__name__ for tool in root_agent.tools]
-}
-
-# NEW: Endpoint to serve the agent's definition.
-@app.get("/agent_definition")
-async def get_agent_definition():
-    """Returns the agent's configuration metadata as JSON."""
-    return Response(content=json.dumps(agent_definition_dict), media_type="application/json")
-
-# Use the ADK utility to automatically create the required
-# /health, /tools, and /execute_tool endpoints.
-
-
-# Optional: Add a main entrypoint for local testing
-if __name__ == "__main__":
-    uvicorn.run(root_agent, host="0.0.0.0", port=8080)
